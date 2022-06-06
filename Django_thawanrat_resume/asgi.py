@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Django3_PersonalPortfolio.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Django_thawanrat_resume.settings')
 
 application = get_asgi_application()
