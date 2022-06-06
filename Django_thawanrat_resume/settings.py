@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import django_on_heroku
+import django_heroku
 import dj_database_url
 import os
 
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-bveez=2z0jw%)v$w!51j^4059&ks-&vwbo@%v=^*4+!jvp!h!0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,9 +127,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"))
+django_heroku.settings(locals())
 
 
 MEDIA_URL = '/media/'
