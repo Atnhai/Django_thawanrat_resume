@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Django3_PersonalPortfolio.urls'
+ROOT_URLCONF = 'Django_thawanrat_resume.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Django3_PersonalPortfolio.wsgi.application'
+WSGI_APPLICATION = 'Django_thawanrat_resume.wsgi.application'
 
 
 # Database
