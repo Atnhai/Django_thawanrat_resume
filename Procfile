@@ -1,0 +1,1 @@
+web: gunicorn Django_thawanrat_resume.wsgi --log-file -

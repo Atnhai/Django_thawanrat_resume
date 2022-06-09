@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import django_heroku
-import dj_database_url
+import dj_database_url       # Place this line preferably at the top
+from decouple import config  # Place this line preferably at the top
 import os
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,7 +32,7 @@ SECRET_KEY = 'django-insecure-bveez=2z0jw%)v$w!51j^4059&ks-&vwbo@%v=^*4+!jvp!h!0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,11 +83,12 @@ WSGI_APPLICATION = 'Django_thawanrat_resume.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
@@ -125,15 +129,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-django_heroku.settings(locals())
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 
 
