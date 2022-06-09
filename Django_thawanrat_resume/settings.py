@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import django_heroku
-import dj_database_url       # Place this line preferably at the top
+# import dj_database_url       # Place this line preferably at the top
 from decouple import config  # Place this line preferably at the top
 import os
+from dj_database_url import parse as dburl
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,6 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-bveez=2z0jw%)v$w!51j^4059&ks-&vwbo@%v=^*4+!jvp!h!0'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,12 +88,9 @@ WSGI_APPLICATION = 'Django_thawanrat_resume.wsgi.application'
 
 # SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG', default=False, cast=bool)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 
 # Password validation
