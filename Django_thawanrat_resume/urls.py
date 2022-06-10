@@ -20,10 +20,11 @@ from django.conf import settings
 from portfolio import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('blog/', include('blog.urls'), name = "blog"),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 
 
 urlpatterns += staticfiles_urlpatterns()
