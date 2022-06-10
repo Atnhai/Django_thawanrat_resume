@@ -16,8 +16,11 @@ import django_heroku
 from decouple import config  # Place this line preferably at the top
 import os
 from dj_database_url import parse as dburl
+from dotenv import load_dotenv
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+load_dotenv()
+
+# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,14 +31,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bveez=2z0jw%)v$w!51j^4059&ks-&vwbo@%v=^*4+!jvp!h!0'
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
+production_host = os.getenv('PRODUCTION_HOST')
+ALLOWED_HOSTS = [production_host] if production_host is not None else []
 
 
 # Application definition
@@ -88,10 +90,16 @@ WSGI_APPLICATION = 'Django_thawanrat_resume.wsgi.application'
 
 # SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG', default=False, cast=bool)
-default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-
-DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
